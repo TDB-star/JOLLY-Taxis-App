@@ -9,21 +9,47 @@
 /* Begin PBXBuildFile section */
 		5D2F5F1427B979FF00209DC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F1327B979FF00209DC9 /* AppDelegate.swift */; };
 		5D2F5F1627B979FF00209DC9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F1527B979FF00209DC9 /* SceneDelegate.swift */; };
-		5D2F5F1827B979FF00209DC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F1727B979FF00209DC9 /* ViewController.swift */; };
 		5D2F5F1B27B979FF00209DC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D2F5F1927B979FF00209DC9 /* Main.storyboard */; };
 		5D2F5F1D27B97A0200209DC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D2F5F1C27B97A0200209DC9 /* Assets.xcassets */; };
 		5D2F5F2027B97A0200209DC9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D2F5F1E27B97A0200209DC9 /* LaunchScreen.storyboard */; };
+		5D2F5F2D27B97FB500209DC9 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F2C27B97FB500209DC9 /* LoginController.swift */; };
+		5D2F5F2F27B980D800209DC9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F2E27B980D800209DC9 /* LoginView.swift */; };
+		5D2F5F3127B9879F00209DC9 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F3027B9879F00209DC9 /* Extentions.swift */; };
+		5D2F5F3327B98F5100209DC9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F3227B98F5100209DC9 /* SignUpController.swift */; };
+		5D2F5F3527B98F9D00209DC9 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */; };
+		5DC79AE727BA8780006B3A51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */; };
+		5DC79AE927BAA87D006B3A51 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */; };
+		5DC79AEB27BAA973006B3A51 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AEA27BAA973006B3A51 /* Cell.swift */; };
+		5DC79AEE27BAAA20006B3A51 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AED27BAAA20006B3A51 /* LocationInputActivationView.swift */; };
+		5DC79AF027BAAA5D006B3A51 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AEF27BAAA5D006B3A51 /* LocationInputView.swift */; };
+		5DC79AF227BAD1A9006B3A51 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AF127BAD1A9006B3A51 /* Service.swift */; };
+		5DDD619727BBCE2F0015D256 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD619627BBCE2E0015D256 /* User.swift */; };
+		F7B1AC45460221112746678A /* Pods_JOLLY_Taxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0E8A15E473EDE1F9FBD29B /* Pods_JOLLY_Taxis.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5D2F5F1027B979FF00209DC9 /* JOLLY Taxis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JOLLY Taxis.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D2F5F1327B979FF00209DC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D2F5F1527B979FF00209DC9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5D2F5F1727B979FF00209DC9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5D2F5F1A27B979FF00209DC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5D2F5F1C27B97A0200209DC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D2F5F1F27B97A0200209DC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D2F5F2127B97A0200209DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D2F5F2C27B97FB500209DC9 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		5D2F5F2E27B980D800209DC9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		5D2F5F3027B9879F00209DC9 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
+		5D2F5F3227B98F5100209DC9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		5DC79AEA27BAA973006B3A51 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		5DC79AED27BAAA20006B3A51 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
+		5DC79AEF27BAAA5D006B3A51 /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
+		5DC79AF127BAD1A9006B3A51 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		5DDD619627BBCE2E0015D256 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6A7803FEC718E72996432414 /* Pods-JOLLY Taxis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JOLLY Taxis.release.xcconfig"; path = "Target Support Files/Pods-JOLLY Taxis/Pods-JOLLY Taxis.release.xcconfig"; sourceTree = "<group>"; };
+		B7E6E38FD38F253B162F62CF /* Pods-JOLLY Taxis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JOLLY Taxis.debug.xcconfig"; path = "Target Support Files/Pods-JOLLY Taxis/Pods-JOLLY Taxis.debug.xcconfig"; sourceTree = "<group>"; };
+		BD0E8A15E473EDE1F9FBD29B /* Pods_JOLLY_Taxis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JOLLY_Taxis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +57,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7B1AC45460221112746678A /* Pods_JOLLY_Taxis.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00A64C2F0DC398A1B17C9A0E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B7E6E38FD38F253B162F62CF /* Pods-JOLLY Taxis.debug.xcconfig */,
+				6A7803FEC718E72996432414 /* Pods-JOLLY Taxis.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		03227F51F8E490CA458FA7CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD0E8A15E473EDE1F9FBD29B /* Pods_JOLLY_Taxis.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5D2F5F0727B979FF00209DC9 = {
 			isa = PBXGroup;
 			children = (
 				5D2F5F1227B979FF00209DC9 /* JOLLY Taxis */,
 				5D2F5F1127B979FF00209DC9 /* Products */,
+				00A64C2F0DC398A1B17C9A0E /* Pods */,
+				03227F51F8E490CA458FA7CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +102,74 @@
 		5D2F5F1227B979FF00209DC9 /* JOLLY Taxis */ = {
 			isa = PBXGroup;
 			children = (
+				5D2F5F2B27B97F5100209DC9 /* Utils */,
+				5D2F5F2A27B97F4600209DC9 /* Service */,
+				5D2F5F2927B97F2F00209DC9 /* Controller */,
+				5D2F5F2827B97F1F00209DC9 /* View */,
+				5DC79AEC27BAA98D006B3A51 /* Cell */,
+				5D2F5F2727B97F0500209DC9 /* Model */,
 				5D2F5F1327B979FF00209DC9 /* AppDelegate.swift */,
 				5D2F5F1527B979FF00209DC9 /* SceneDelegate.swift */,
-				5D2F5F1727B979FF00209DC9 /* ViewController.swift */,
 				5D2F5F1927B979FF00209DC9 /* Main.storyboard */,
 				5D2F5F1C27B97A0200209DC9 /* Assets.xcassets */,
 				5D2F5F1E27B97A0200209DC9 /* LaunchScreen.storyboard */,
 				5D2F5F2127B97A0200209DC9 /* Info.plist */,
+				5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */,
 			);
 			path = "JOLLY Taxis";
+			sourceTree = "<group>";
+		};
+		5D2F5F2727B97F0500209DC9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5DDD619627BBCE2E0015D256 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5D2F5F2827B97F1F00209DC9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5D2F5F2E27B980D800209DC9 /* LoginView.swift */,
+				5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */,
+				5DC79AED27BAAA20006B3A51 /* LocationInputActivationView.swift */,
+				5DC79AEF27BAAA5D006B3A51 /* LocationInputView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D2F5F2927B97F2F00209DC9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5D2F5F2C27B97FB500209DC9 /* LoginController.swift */,
+				5D2F5F3227B98F5100209DC9 /* SignUpController.swift */,
+				5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		5D2F5F2A27B97F4600209DC9 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				5DC79AF127BAD1A9006B3A51 /* Service.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		5D2F5F2B27B97F5100209DC9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5D2F5F3027B9879F00209DC9 /* Extentions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		5DC79AEC27BAA98D006B3A51 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5DC79AEA27BAA973006B3A51 /* Cell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +179,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D2F5F2427B97A0200209DC9 /* Build configuration list for PBXNativeTarget "JOLLY Taxis" */;
 			buildPhases = (
+				45B50275AF0984A2A0CFE03D /* [CP] Check Pods Manifest.lock */,
 				5D2F5F0C27B979FF00209DC9 /* Sources */,
 				5D2F5F0D27B979FF00209DC9 /* Frameworks */,
 				5D2F5F0E27B979FF00209DC9 /* Resources */,
+				E8B8B987D4A66022CEF02C20 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D2F5F2027B97A0200209DC9 /* LaunchScreen.storyboard in Resources */,
+				5DC79AE727BA8780006B3A51 /* GoogleService-Info.plist in Resources */,
 				5D2F5F1D27B97A0200209DC9 /* Assets.xcassets in Resources */,
 				5D2F5F1B27B979FF00209DC9 /* Main.storyboard in Resources */,
 			);
@@ -133,14 +241,66 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		45B50275AF0984A2A0CFE03D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JOLLY Taxis-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E8B8B987D4A66022CEF02C20 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JOLLY Taxis/Pods-JOLLY Taxis-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JOLLY Taxis/Pods-JOLLY Taxis-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JOLLY Taxis/Pods-JOLLY Taxis-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5D2F5F0C27B979FF00209DC9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D2F5F1827B979FF00209DC9 /* ViewController.swift in Sources */,
+				5DDD619727BBCE2F0015D256 /* User.swift in Sources */,
+				5DC79AEE27BAAA20006B3A51 /* LocationInputActivationView.swift in Sources */,
 				5D2F5F1427B979FF00209DC9 /* AppDelegate.swift in Sources */,
+				5D2F5F2D27B97FB500209DC9 /* LoginController.swift in Sources */,
+				5D2F5F3127B9879F00209DC9 /* Extentions.swift in Sources */,
+				5DC79AE927BAA87D006B3A51 /* HomeViewController.swift in Sources */,
+				5DC79AF227BAD1A9006B3A51 /* Service.swift in Sources */,
+				5D2F5F3527B98F9D00209DC9 /* SignUpView.swift in Sources */,
+				5DC79AEB27BAA973006B3A51 /* Cell.swift in Sources */,
+				5D2F5F2F27B980D800209DC9 /* LoginView.swift in Sources */,
 				5D2F5F1627B979FF00209DC9 /* SceneDelegate.swift in Sources */,
+				5D2F5F3327B98F5100209DC9 /* SignUpController.swift in Sources */,
+				5DC79AF027BAAA5D006B3A51 /* LocationInputView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,11 +444,13 @@
 		};
 		5D2F5F2527B97A0200209DC9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7E6E38FD38F253B162F62CF /* Pods-JOLLY Taxis.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GQ68AAHFB4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "JOLLY Taxis/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -311,11 +473,13 @@
 		};
 		5D2F5F2627B97A0200209DC9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A7803FEC718E72996432414 /* Pods-JOLLY Taxis.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GQ68AAHFB4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "JOLLY Taxis/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
