@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 let passwordToggleButton = UIButton(type: .custom)
 
@@ -58,4 +59,18 @@ extension UIColor {
         return UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: 1.0)
     }
     static let appColor = UIColor.rgbColor(red: 17, green: 154, blue: 237)
+}
+
+extension MKPlacemark {
+    var adress: String? {
+        get {
+            guard let subThroughfare = subThoroughfare,
+                    let thoroughfare = thoroughfare,
+                    let locality = locality,
+                    let adminArea = administrativeArea
+            else { return nil }
+            return "\(subThroughfare) \(thoroughfare), \(locality), \(adminArea)"
+        }
+        
+    }
 }

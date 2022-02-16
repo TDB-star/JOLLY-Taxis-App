@@ -191,6 +191,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseCellIdentifire, for: indexPath) as! LocationTableViewCell
+        
+        if indexPath.section == 1 {
+            cell.placemark = seachResults[indexPath.row]
+        }
         return cell
     }
 }
