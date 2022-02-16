@@ -123,7 +123,7 @@ extension LoginViewController {
             }
             
             guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeViewController else { return }
-            controller.configureUI()
+            controller.configure()
             self.dismiss(animated: true, completion: nil)
             print("DEBUG: Siccesfully logged user in")
         }

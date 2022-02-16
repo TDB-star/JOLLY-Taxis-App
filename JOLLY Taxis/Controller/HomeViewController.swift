@@ -10,6 +10,7 @@ import Firebase
 import MapKit
 
 private let reuseCellIdentifire = "locationInputCell"
+private let annotationIdentifire = "DriverAnnotation"
 
     class HomeViewController: UIViewController {
  
@@ -33,8 +34,7 @@ private let reuseCellIdentifire = "locationInputCell"
             
             checkIfUserIsLoggedIn()
             enableLocationServices()
-            signOut()
-            fetchDrivers()
+           // signOut()
         }
     }
         
@@ -52,8 +52,7 @@ extension HomeViewController {
                 self.present(nav, animated: true, completion: nil)
             }
         } else {
-            configureUI()
-            fetchUserData()
+            configure()
         }
     }
     
@@ -62,8 +61,22 @@ extension HomeViewController {
         ServiceManager.shared.fetchDrivers(location: location) { driver in
             guard let coordinate = driver.location?.coordinate else { return }
             let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
-            print("DEBUG: Drever location is \(String(describing: driver.location))")
+            
+            var driverIsVisible: Bool {
+                
+                self.mapView.annotations.contains { annotation in
+                    guard let driverAnno = annotation as? DriverAnnotation else {return false }
+                    if driverAnno.uid == driver.uid {
+                        // update position here запрос позиции из базы данных
+                        driverAnno.updateAnnotationPosition(withCoordinate: coordinate)
+                        return true
+                    }
+                    return false
+                }
+            }
+            if !driverIsVisible {
                 self.mapView.addAnnotation(annotation)
+            }
         }
     }
     
@@ -119,6 +132,8 @@ extension HomeViewController {
         mapView.frame = view.frame
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        
+        mapView.delegate = self
     }
     
     func configureLocationInputView() {
@@ -234,10 +249,30 @@ extension HomeViewController {
             break
         }
     }
-
-
 }
 
+// MARK: - MKMapViewDelegate
+
+extension HomeViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? DriverAnnotation {
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifire)
+            view.image = UIImage(named: "taxi-s")
+            return view
+        }
+        return nil
+    }
+}
+// MARK: - Helpers
+
+extension HomeViewController {
+    func configure() {
+        configureUI()
+        fetchUserData()
+        fetchDrivers()
+    }
+}
 
 
 
