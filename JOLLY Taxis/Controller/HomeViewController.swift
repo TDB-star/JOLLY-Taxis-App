@@ -14,7 +14,7 @@ private let reuseCellIdentifire = "locationInputCell"
     class HomeViewController: UIViewController {
  
         private let mapView = MKMapView()
-        private let locationManager = CLLocationManager()
+        private let locationManager = LocationHandler.shared.locationManager
         private let locationInputView = LocationInputView()
         let tableView = UITableView()
         
@@ -30,15 +30,18 @@ private let reuseCellIdentifire = "locationInputCell"
         override func viewDidLoad() {
             super.viewDidLoad()
             locationInputActivationView.translatesAutoresizingMaskIntoConstraints = false
-            fetchUserData()
+            
             checkIfUserIsLoggedIn()
             enableLocationServices()
+            signOut()
+            fetchDrivers()
         }
     }
         
 // MARK: - API
 
 extension HomeViewController {
+    
     private func checkIfUserIsLoggedIn() {
         let currentUserId = Auth.auth().currentUser?.uid
         if currentUserId == nil  {
@@ -50,21 +53,36 @@ extension HomeViewController {
             }
         } else {
             configureUI()
-            //print("DEBUG: User is logged in")
-            //print("DEBUG: User id is \(String(describing: currentUserId))")
+            fetchUserData()
+        }
+    }
+    
+    private func fetchDrivers() {
+        guard let location = locationManager.location else { return }
+        ServiceManager.shared.fetchDrivers(location: location) { driver in
+            guard let coordinate = driver.location?.coordinate else { return }
+            let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
+            print("DEBUG: Drever location is \(String(describing: driver.location))")
+                self.mapView.addAnnotation(annotation)
         }
     }
     
     private func signOut() {
         do {
             try Auth.auth().signOut()
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginViewController())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
         } catch let signOutError as NSError {
             print("DEBUG: Error signing out: \(signOutError.localizedDescription)")
         }
     }
     
     private func fetchUserData() {
-        ServiceManager.shared.fetchUserData { [weak self] user in
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        ServiceManager.shared.fetchUserData(uid: currentUid) { [weak self] user in
             self?.user = user
         }
     }
@@ -187,10 +205,9 @@ extension HomeViewController: LocationInputViewDelegate {
 
 // MARK: - Location Manager
 
-extension HomeViewController: CLLocationManagerDelegate {
+extension HomeViewController {
     
     private func enableLocationServices() {
-        locationManager.delegate = self
         
         let authorizationStatus: CLAuthorizationStatus
 
@@ -217,12 +234,7 @@ extension HomeViewController: CLLocationManagerDelegate {
             break
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse {
-            locationManager.requestAlwaysAuthorization()
-        }
-    }
+
 
 }
 

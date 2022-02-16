@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class SignUpView: UIView {
     
     let stackView = UIStackView()

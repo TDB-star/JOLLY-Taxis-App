@@ -7,8 +7,11 @@
 
 import UIKit
 import Firebase
+import GeoFire
 
 class SignUpViewController: UIViewController {
+    
+    private var location = LocationHandler.shared.locationManager.location
     
     let signUpView = SignUpView()
     let segmentedControl = UISegmentedControl(items: ["Rider", "Driver"])
@@ -21,6 +24,8 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         style()
         layout()
+        let sharedLocationManager = LocationHandler.shared.locationManager
+        print("DEBUG: Location is \(String(describing: sharedLocationManager.location))")
     }
 }
 
@@ -30,7 +35,7 @@ extension SignUpViewController {
         signUpView.translatesAutoresizingMaskIntoConstraints = false
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.selectedSegmentIndex = 0
         segmentedControl.tintColor = UIColor.systemGroupedBackground
         segmentedControl.backgroundColor = UIColor.systemGroupedBackground
         segmentedControl.addTarget(self, action: #selector(segmentedValueChanged), for: .valueChanged)
@@ -122,22 +127,39 @@ extension SignUpViewController {
 }
 extension SignUpViewController {
     private func createUserWith(email: String, password: String, fullname: String, accountType: Int) {
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
                 print("DEBUG: Failed to register user with error: \(error.localizedDescription) ")
                 return
             }
             guard let uid = result?.user.uid else { return }
+            
             let values = ["email": email,
                           "fullname": fullname,
                           "password": password,
                           "accountType": accountType] as [String: Any ]
-            Database.database(url: "https://jolly-taxi-9dad6-default-rtdb.europe-west1.firebasedatabase.app").reference().child("users").child(uid).updateChildValues(values) { error, ref in
-                guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeViewController else { return }
-                controller.configureUI()
-                self.dismiss(animated: true, completion: nil)
+            
+            if accountType == 1 {
+                let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+                guard let location = self?.location else { return }
+                geofire.setLocation(location, forKey: uid) { [weak self] error in
+                    self?.uploadUserAndShowHomeController(uid: uid, values: values)
+                }
             }
+            self?.uploadUserAndShowHomeController(uid: uid, values: values)
         }
+    }
+}
+
+extension SignUpViewController {
+    // MARK: - Helpers
+    
+    func uploadUserAndShowHomeController(uid: String, values: [String: Any]) {
+        REF_USERS.child(uid).updateChildValues(values) { error, ref in
+              guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeViewController else { return }
+              controller.configureUI()
+              self.dismiss(animated: true, completion: nil)
+          }
     }
 }
 
