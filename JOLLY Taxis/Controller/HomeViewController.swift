@@ -21,6 +21,7 @@ private let annotationIdentifire = "DriverAnnotation"
         
         let locationInputActivationView = LocationInputActivationView()
         private final let locationInputViewHeight: CGFloat = 200
+        private var seachResults = [MKPlacemark]()
         
         private var user: User? {
             didSet {
@@ -185,7 +186,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? 2 : 5
+        section == 0 ? 2 : seachResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -204,7 +205,13 @@ extension HomeViewController: locationInputActivationViewDelegate {
 }
 
 extension HomeViewController: LocationInputViewDelegate {
-    
+    func executeSeach(query: String) {
+        searchBy(naturalLanguageQuery: query) { [weak self] results in
+            self?.seachResults = results
+            self?.tableView.reloadData()
+        }
+            }
+
     func dissmissLocationInputView() {
         UIView.animate(withDuration: 0.3) {
             self.locationInputView.alpha = 0
@@ -271,6 +278,29 @@ extension HomeViewController {
         configureUI()
         fetchUserData()
         fetchDrivers()
+    }
+}
+
+//MARK: - Map Helper functions
+
+extension HomeViewController {
+    
+    func searchBy(naturalLanguageQuery: String, completion: @escaping([MKPlacemark]) -> Void) {
+        var results = [MKPlacemark]()
+        
+        let request = MKLocalSearch.Request()
+        request.region = mapView.region
+        request.naturalLanguageQuery = naturalLanguageQuery
+        
+        let search = MKLocalSearch(request: request)
+        
+        search.start { response, error in
+            guard let response = response else { return }
+            response.mapItems.forEach { item in
+                results.append(item.placemark)
+            }
+            completion(results)
+        }
     }
 }
 
