@@ -74,6 +74,7 @@ class LocationInputView: UIView {
     
     func style() {
         backgroundColor = .white
+        addShadow()
         translatesAutoresizingMaskIntoConstraints = false
         
         backButton.translatesAutoresizingMaskIntoConstraints = false

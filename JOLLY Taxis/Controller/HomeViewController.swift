@@ -26,6 +26,7 @@ private enum ActionButtonConfiguration {
         private let mapView = MKMapView()
         private let locationManager = LocationHandler.shared.locationManager
         private let locationInputView = LocationInputView()
+        private let rideActionView = RideActionView()
         let tableView = UITableView()
         private var actionButtonConfig = ActionButtonConfiguration()
         private var route: MKRoute?
@@ -34,7 +35,8 @@ private enum ActionButtonConfiguration {
         let actionButton: UIButton = {
             let button = UIButton(type: .system)
             button.setImage(UIImage(systemName: "line.3.horizontal"), for: .normal)
-            button.configuration = .plain()
+            button.tintColor = .black
+            button.backgroundColor = .clear
             button.addTarget(self, action: #selector(actionButtonPressed), for: .primaryActionTriggered)
             return button
         }()
@@ -130,6 +132,7 @@ extension HomeViewController {
         configureLocationInputActivationView()
         configureTableView()
         configureMenueButton()
+        configureRideActionView()
 
     }
     
@@ -138,17 +141,19 @@ extension HomeViewController {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(actionButton)
         
-        
         NSLayoutConstraint.activate([
             actionButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             actionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2)
         ])
     }
+    
     func configureLocationInputActivationView() {
         view.addSubview(locationInputActivationView)
         
         locationInputActivationView.delegate = self
         locationInputActivationView.alpha = 0
+        locationInputActivationView.layer.cornerRadius = 8
+        
         UIView.animate(withDuration: 2, delay: 0, options: .curveEaseInOut) {
             self.locationInputActivationView.alpha = 1
         }
@@ -192,13 +197,30 @@ extension HomeViewController {
         }
     }
     
-    
     func dissmissLocationInputView() {
         dismissLocationView { _ in
             UIView.animate(withDuration: 0.5, animations: {
                 self.locationInputActivationView.alpha = 1
             })
         }
+    }
+    
+    func configureRideActionView() {
+        
+        rideActionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(rideActionView)
+        
+        NSLayoutConstraint.activate([
+            view.bottomAnchor.constraint(equalToSystemSpacingBelow: rideActionView.bottomAnchor, multiplier: 0),
+            rideActionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 0),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: rideActionView.trailingAnchor, multiplier: 0),
+            rideActionView.heightAnchor.constraint(equalToConstant: 300)
+            
+        ])
+        
+        //let height = view.frame.height
+        //rideActionView.frame = CGRect(x: 0, y: view.frame.height - 300, width: view.frame.width, height: 300)
+       
     }
     
     func configureTableView() {
@@ -347,7 +369,9 @@ extension HomeViewController {
     private func configureActionButton(config: ActionButtonConfiguration) {
         switch config {
         case .showManue:
-            self.actionButton.setImage(UIImage(systemName: "line.3.horizontal"), for: .normal)
+            let image = UIImage(systemName: "line.3.horizontal")
+            self.actionButton.setImage(image, for: .normal)
+          
             self.actionButtonConfig = .showManue
         case .dismissActionView:
             actionButton.setImage(UIImage(systemName: "arrow.left"), for: .normal)

@@ -74,3 +74,12 @@ extension MKPlacemark {
         
     }
 }
+
+extension UIView {
+    func addShadow() {
+        layer.shadowColor = UIColor.lightGray.cgColor
+        layer.shadowOpacity = 0.55
+        layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
+        layer.masksToBounds = false
+    }
+}

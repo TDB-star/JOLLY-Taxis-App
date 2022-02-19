@@ -17,6 +17,7 @@
 		5D2F5F3127B9879F00209DC9 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F3027B9879F00209DC9 /* Extentions.swift */; };
 		5D2F5F3327B98F5100209DC9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F3227B98F5100209DC9 /* SignUpController.swift */; };
 		5D2F5F3527B98F9D00209DC9 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */; };
+		5DA7DD7627C0232F003CB912 /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA7DD7527C0232F003CB912 /* RideActionView.swift */; };
 		5DC79AE727BA8780006B3A51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */; };
 		5DC79AE927BAA87D006B3A51 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */; };
 		5DC79AEB27BAA973006B3A51 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AEA27BAA973006B3A51 /* Cell.swift */; };
@@ -42,6 +43,7 @@
 		5D2F5F3027B9879F00209DC9 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		5D2F5F3227B98F5100209DC9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		5DA7DD7527C0232F003CB912 /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5DC79AEA27BAA973006B3A51 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */,
 				5DC79AED27BAAA20006B3A51 /* LocationInputActivationView.swift */,
 				5DC79AEF27BAAA5D006B3A51 /* LocationInputView.swift */,
+				5DA7DD7527C0232F003CB912 /* RideActionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				5DC79AEB27BAA973006B3A51 /* Cell.swift in Sources */,
 				5D2F5F2F27B980D800209DC9 /* LoginView.swift in Sources */,
 				5DDD619927BBDC7B0015D256 /* LocationHandler.swift in Sources */,
+				5DA7DD7627C0232F003CB912 /* RideActionView.swift in Sources */,
 				5D2F5F1627B979FF00209DC9 /* SceneDelegate.swift in Sources */,
 				5D2F5F3327B98F5100209DC9 /* SignUpController.swift in Sources */,
 				5DC79AF027BAAA5D006B3A51 /* LocationInputView.swift in Sources */,
