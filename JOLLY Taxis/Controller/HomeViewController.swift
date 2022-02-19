@@ -43,6 +43,11 @@ private enum ActionButtonConfiguration {
         
         let locationInputActivationView = LocationInputActivationView()
         private final let locationInputViewHeight: CGFloat = 200
+        private let rideActionViewHeight: CGFloat = 300
+        private var bottomEdgeOffScreen: CGFloat = -300
+        private var bottomEdgeOnScreen: CGFloat = 0
+        
+        private var rideActionViewBottomAnchor: NSLayoutConstraint?
         private var seachResults = [MKPlacemark]()
         
         private var user: User? {
@@ -211,15 +216,17 @@ extension HomeViewController {
         view.addSubview(rideActionView)
         
         NSLayoutConstraint.activate([
-            view.bottomAnchor.constraint(equalToSystemSpacingBelow: rideActionView.bottomAnchor, multiplier: 0),
             rideActionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 0),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: rideActionView.trailingAnchor, multiplier: 0),
             rideActionView.heightAnchor.constraint(equalToConstant: 300)
-            
         ])
         
-        //let height = view.frame.height
-        //rideActionView.frame = CGRect(x: 0, y: view.frame.height - 300, width: view.frame.width, height: 300)
+        rideActionViewBottomAnchor = view.bottomAnchor.constraint(equalTo: rideActionView.bottomAnchor, constant: bottomEdgeOffScreen)
+        rideActionViewBottomAnchor?.isActive = true
+    
+//        view.bottomAnchor.constraint(equalToSystemSpacingBelow: rideActionView.bottomAnchor, multiplier: 0),
+//        rideActionView.frame = CGRect(x: 0, y: view.frame.height,
+//                                      width: view.frame.width, height: rideActionViewHeight)
        
     }
     
@@ -278,6 +285,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.selectAnnotation(annotation, animated: true)
             let annotations = self.mapView.annotations.filter({!$0.isKind(of: DriverAnnotation.self)})
             self.mapView.showAnnotations(annotations, animated: true)
+            self.animateRideActionView(shoudShow: false)
         }
     }
 }
@@ -379,6 +387,18 @@ extension HomeViewController {
         }
     }
     
+    func animateRideActionView(shoudShow: Bool) {
+        
+        let yOrigin = shoudShow ? bottomEdgeOffScreen : bottomEdgeOnScreen
+        
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+            self.rideActionViewBottomAnchor?.constant = yOrigin
+            self.view.layoutIfNeeded()
+        }
+        animator.startAnimation()
+    }
+    
+    
     //MARK: - Selectors
     
     @objc func actionButtonPressed() {
@@ -391,6 +411,7 @@ extension HomeViewController {
             UIView.animate(withDuration: 0.3) {
                 self.locationInputActivationView.alpha = 1
                 self.configureActionButton(config: .showManue)
+                self.animateRideActionView(shoudShow: true)
             }
         }
     }
