@@ -52,10 +52,30 @@ class RideActionView: UIView {
     let jollyTaxiLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
-        label.text = "JOLLY Taxi X"
+        label.text = "JOLLYTaxiX"
         return label
+    }()
+    
+    let dividerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemFill
+        view.layer.cornerRadius = 5
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    let actionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemPink
+        button.setTitle("Confirm Ride", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.layer.cornerRadius = 8
+        button.layer.cornerCurve = .continuous
+        button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
+        return button
     }()
     
     override init(frame: CGRect) {
@@ -79,6 +99,8 @@ extension RideActionView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         infoView.translatesAutoresizingMaskIntoConstraints = false
         jollyTaxiLabel.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
         
         infoView.layer.cornerRadius = 40
         infoView.clipsToBounds = true
@@ -95,6 +117,9 @@ extension RideActionView {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(adressLabel)
         addSubview(infoView)
+        addSubview(jollyTaxiLabel)
+        addSubview(dividerView)
+        addSubview(actionButton)
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
@@ -103,7 +128,22 @@ extension RideActionView {
             infoView.topAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 2),
             infoView.heightAnchor.constraint(equalToConstant: 80),
             infoView.widthAnchor.constraint(equalToConstant: 80),
+            jollyTaxiLabel.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
+            jollyTaxiLabel.topAnchor.constraint(equalToSystemSpacingBelow: infoView.bottomAnchor, multiplier: 1),
+            dividerView.topAnchor.constraint(equalToSystemSpacingBelow: jollyTaxiLabel.bottomAnchor, multiplier: 3),
+            dividerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            dividerView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 0),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: dividerView.trailingAnchor, multiplier: 0),
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            actionButton.topAnchor.constraint(equalToSystemSpacingBelow: dividerView.bottomAnchor, multiplier: 3),
+            actionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: actionButton.trailingAnchor, multiplier: 1),
+            actionButton.heightAnchor.constraint(equalToConstant: 38)
             
         ])
+    }
+    
+    @objc func actionButtonPressed() {
+        print("DEBUG: 123")
     }
 }
