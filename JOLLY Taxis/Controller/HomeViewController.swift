@@ -57,8 +57,19 @@ private enum ActionButtonConfiguration {
                     fetchDrivers()
                     configureLocationInputActivationView()
                 } else {
-                    print("DEBUG: User is driver ...")
+                    observeTrips()
                 }
+            }
+        }
+        
+        private var trip: Trip? {
+            didSet {
+                guard let trip = trip else { return }
+                let controller = PickupViewController(trip: trip)
+                controller.modalPresentationStyle = .fullScreen
+                self.present(controller, animated: true, completion: nil)
+               
+                print("DEBUG: Show pickup passenger controller ...")
             }
         }
         
@@ -69,7 +80,7 @@ private enum ActionButtonConfiguration {
             checkIfUserIsLoggedIn()
             enableLocationServices()
            
-            signOut()
+           // signOut()
         }
     }
         
@@ -133,6 +144,12 @@ extension HomeViewController {
             self?.user = user
         }
     }
+    
+    func observeTrips() {
+        ServiceManager.shared.observeTrips { trip in
+            self.trip = trip
+        }
+    }
 }
  // MARK: - Cofigure UI
 
@@ -140,7 +157,6 @@ extension HomeViewController {
     
     func configureUI() {
         configureMapView()
-        //configureLocationInputActivationView()
         configureTableView()
         configureMenueButton()
         configureRideActionView()
@@ -514,6 +530,7 @@ extension HomeViewController: RideActionViewDelegate {
             print("DEBUG: Did upload trip successfully")
         }
     }
+
 }
 
 
