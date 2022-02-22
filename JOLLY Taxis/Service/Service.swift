@@ -14,6 +14,7 @@ let databaseUrl = "https://jolly-taxi-9dad6-default-rtdb.europe-west1.firebaseda
 let DB_REF = Database.database(url: databaseUrl).reference()
 let REF_USERS = DB_REF.child("users")
 let REF_DRIVER_LOCATIONS = DB_REF.child("driver-locationts")
+let REF_TRIPS = DB_REF.child("trips")
 class ServiceManager {
     
     static let shared = ServiceManager()
@@ -43,6 +44,17 @@ class ServiceManager {
                 }
             })
         }
+    }
+    func uploadTrip(_ pickupCoordinates: CLLocationCoordinate2D, _ destinationCoordinates: CLLocationCoordinate2D, completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let pickupArray = [pickupCoordinates.latitude, pickupCoordinates.longitude]
+        let destinationArray = [destinationCoordinates.latitude, destinationCoordinates.longitude]
+        
+        let values = ["pickupCoordinates": pickupArray,
+                      "destinationCoordinates": destinationArray,
+                      "state": TripState.requested.rawValue] as [String: Any]
+        REF_TRIPS.child(uid).updateChildValues(values, withCompletionBlock: completion)
     }
 }
 

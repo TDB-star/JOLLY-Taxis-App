@@ -62,6 +62,7 @@ private enum ActionButtonConfiguration {
             
             checkIfUserIsLoggedIn()
             enableLocationServices()
+           
            // signOut()
         }
     }
@@ -214,6 +215,7 @@ extension HomeViewController {
         
         rideActionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(rideActionView)
+        rideActionView.delegate = self
         
         NSLayoutConstraint.activate([
             rideActionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 0),
@@ -222,6 +224,7 @@ extension HomeViewController {
         ])
         
         rideActionViewBottomAnchor = view.bottomAnchor.constraint(equalTo: rideActionView.bottomAnchor, constant: bottomEdgeOffScreen)
+        //rideActionViewBottomAnchor = rideActionView.bottomAnchor.constraint(equalTo: view.bottomAnchor , constant: bottomEdgeOffScreen)
         rideActionViewBottomAnchor?.isActive = true
     
 //        view.bottomAnchor.constraint(equalToSystemSpacingBelow: rideActionView.bottomAnchor, multiplier: 0),
@@ -284,8 +287,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
             let annotations = self.mapView.annotations.filter({!$0.isKind(of: DriverAnnotation.self)})
-            self.mapView.showAnnotations(annotations, animated: true)
-            self.animateRideActionView(shoudShow: false)
+            self.mapView.zoomToFit(annotation: annotations)
+            UIView.animate(withDuration: 0.3) {
+                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
+                self.rideActionView.layoutIfNeeded()
+            }
+            self.rideActionView.destination = selectedPlacemark
         }
     }
 }
@@ -387,15 +394,25 @@ extension HomeViewController {
         }
     }
     
-    func animateRideActionView(shoudShow: Bool) {
+    func animateRideActionView(shoudShow: Bool, destination: MKPlacemark? = nil) {
         
         let yOrigin = shoudShow ? bottomEdgeOffScreen : bottomEdgeOnScreen
         
-        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-            self.rideActionViewBottomAnchor?.constant = yOrigin
-            self.view.layoutIfNeeded()
+        if shoudShow {
+            guard let destination = destination else { return }
+            rideActionView.destination = destination
         }
-        animator.startAnimation()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.rideActionViewBottomAnchor?.constant = yOrigin
+            self.rideActionView.layoutIfNeeded()
+        }
+        
+//        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+//
+//            //self.view.layoutIfNeeded()
+//        }
+//        animator.startAnimation()
     }
     
     
@@ -407,11 +424,17 @@ extension HomeViewController {
             print("DEBUG: Handle show menue...")
         case.dismissActionView:
             removeAnnotationsAndOverlays()
+            UIView.animate(withDuration: 0.3) {
+                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOffScreen
+                self.rideActionView.layoutIfNeeded()
+            }
+            
             mapView.showAnnotations(mapView.annotations, animated: true)
             UIView.animate(withDuration: 0.3) {
+                
                 self.locationInputActivationView.alpha = 1
                 self.configureActionButton(config: .showManue)
-                self.animateRideActionView(shoudShow: true)
+                
             }
         }
     }
@@ -478,6 +501,21 @@ extension HomeViewController {
             }, completion: completion)
         }
     }
+
+extension HomeViewController: RideActionViewDelegate {
+    
+    func uploadTrip(_ view: RideActionView) {
+        guard let pickupCoordinates = locationManager.location?.coordinate else { return }
+        guard let destinationCoordinates = view.destination?.coordinate else { return }
+        ServiceManager.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { error, ref in
+            if let error = error {
+                print("DEBUG: Failed to upload trip with error \(error.localizedDescription)")
+                return
+            }
+            print("DEBUG: Did upload trip successfully")
+        }
+    }
+}
 
 
 

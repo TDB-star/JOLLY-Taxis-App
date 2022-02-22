@@ -6,8 +6,15 @@
 //
 
 import UIKit
+import MapKit
+
+protocol RideActionViewDelegate: NSObject {
+    func uploadTrip(_ view: RideActionView)
+}
 
 class RideActionView: UIView {
+    
+    weak var delegate: RideActionViewDelegate?
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -15,6 +22,7 @@ class RideActionView: UIView {
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18)
         label.text = "Test Adress title"
+        label.numberOfLines = 0
         return label
     }()
     
@@ -24,8 +32,16 @@ class RideActionView: UIView {
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
         label.text = "19 Sovetskaya str"
+        label.numberOfLines = 0
         return label
     }()
+    
+    var destination: MKPlacemark? {
+        didSet {
+            titleLabel.text = destination?.name
+            adressLabel.text = destination?.adress
+        }
+    }
     
     let stackView = UIStackView()
     
@@ -109,7 +125,7 @@ extension RideActionView {
         backgroundColor = .white
         addShadow()
         stackView.axis = .vertical
-        stackView.spacing = 4
+        stackView.spacing = 0
         stackView.distribution = .fillEqually
         
     }
@@ -124,19 +140,21 @@ extension RideActionView {
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            //stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 1),
             infoView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            infoView.topAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 2),
+            infoView.topAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 1),
             infoView.heightAnchor.constraint(equalToConstant: 80),
             infoView.widthAnchor.constraint(equalToConstant: 80),
             jollyTaxiLabel.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
             jollyTaxiLabel.topAnchor.constraint(equalToSystemSpacingBelow: infoView.bottomAnchor, multiplier: 1),
-            dividerView.topAnchor.constraint(equalToSystemSpacingBelow: jollyTaxiLabel.bottomAnchor, multiplier: 3),
+            dividerView.topAnchor.constraint(equalToSystemSpacingBelow: jollyTaxiLabel.bottomAnchor, multiplier: 2),
             dividerView.centerXAnchor.constraint(equalTo: centerXAnchor),
             dividerView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 0),
             trailingAnchor.constraint(equalToSystemSpacingAfter: dividerView.trailingAnchor, multiplier: 0),
             dividerView.heightAnchor.constraint(equalToConstant: 1),
-            actionButton.topAnchor.constraint(equalToSystemSpacingBelow: dividerView.bottomAnchor, multiplier: 3),
+            actionButton.topAnchor.constraint(equalToSystemSpacingBelow: dividerView.bottomAnchor, multiplier: 2),
             actionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             trailingAnchor.constraint(equalToSystemSpacingAfter: actionButton.trailingAnchor, multiplier: 1),
             actionButton.heightAnchor.constraint(equalToConstant: 38)
@@ -145,6 +163,6 @@ extension RideActionView {
     }
     
     @objc func actionButtonPressed() {
-        print("DEBUG: 123")
+        delegate?.uploadTrip(self)
     }
 }
