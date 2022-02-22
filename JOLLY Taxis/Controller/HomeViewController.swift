@@ -53,6 +53,12 @@ private enum ActionButtonConfiguration {
         private var user: User? {
             didSet {
                 locationInputView.user = user
+                if user?.accountType == .passenger {
+                    fetchDrivers()
+                    configureLocationInputActivationView()
+                } else {
+                    print("DEBUG: User is driver ...")
+                }
             }
         }
         
@@ -63,7 +69,7 @@ private enum ActionButtonConfiguration {
             checkIfUserIsLoggedIn()
             enableLocationServices()
            
-           // signOut()
+            signOut()
         }
     }
         
@@ -96,7 +102,6 @@ extension HomeViewController {
                 self.mapView.annotations.contains { annotation in
                     guard let driverAnno = annotation as? DriverAnnotation else {return false }
                     if driverAnno.uid == driver.uid {
-                        // update position here запрос позиции из базы данных
                         driverAnno.updateAnnotationPosition(withCoordinate: coordinate)
                         return true
                     }
@@ -135,7 +140,7 @@ extension HomeViewController {
     
     func configureUI() {
         configureMapView()
-        configureLocationInputActivationView()
+        //configureLocationInputActivationView()
         configureTableView()
         configureMenueButton()
         configureRideActionView()
@@ -154,6 +159,7 @@ extension HomeViewController {
     }
     
     func configureLocationInputActivationView() {
+
         view.addSubview(locationInputActivationView)
         
         locationInputActivationView.delegate = self
@@ -378,7 +384,6 @@ extension HomeViewController {
     func configure() {
         configureUI()
         fetchUserData()
-        fetchDrivers()
     }
     
     private func configureActionButton(config: ActionButtonConfiguration) {
@@ -407,12 +412,6 @@ extension HomeViewController {
             self.rideActionViewBottomAnchor?.constant = yOrigin
             self.rideActionView.layoutIfNeeded()
         }
-        
-//        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-//
-//            //self.view.layoutIfNeeded()
-//        }
-//        animator.startAnimation()
     }
     
     

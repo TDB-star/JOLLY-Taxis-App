@@ -8,17 +8,25 @@
 import Foundation
 import CoreLocation
 
+enum AccountType: Int {
+    case passenger
+    case driver
+}
+
 struct User {
     let uid: String
     let fullname: String
     let email: String
-    let accountType: Int
+    var accountType: AccountType!
     var location: CLLocation?
     
     init(uid: String, _ dictionary: NSDictionary) {
         self.uid = uid
         fullname = dictionary["fullname"] as? String ?? ""
         email = dictionary["email"] as? String ?? ""
-        accountType = dictionary["accountType"] as? Int ?? 0
+    
+        if let index = dictionary["accountType"] as? Int {
+            self.accountType = AccountType(rawValue: index)
+        }
     }
 }
