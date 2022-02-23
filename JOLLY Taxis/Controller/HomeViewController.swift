@@ -171,6 +171,15 @@ extension HomeViewController {
             if trip.state == .accepted {
                 print("DEBUG: Trip was accepted")
                 self.shouldPresentLoadingView(false)
+                guard let driverUid = trip.driverUid else { return }
+                
+                ServiceManager.shared.fetchUserData(uid: driverUid) { driver in
+                    self.animateRideActionView(shoudShow: true, config: .tripAccepted, user: driver)
+                    UIView.animate(withDuration: 0.3) {
+                        self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
+                        self.rideActionView.layoutIfNeeded()
+                    }
+                }
             }
         }
     }
@@ -328,11 +337,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.selectAnnotation(annotation, animated: true)
             let annotations = self.mapView.annotations.filter({!$0.isKind(of: DriverAnnotation.self)})
             self.mapView.zoomToFit(annotation: annotations)
+            self.animateRideActionView(shoudShow: true, destination: selectedPlacemark, config: .requestRide)
             UIView.animate(withDuration: 0.3) {
                 self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
                 self.rideActionView.layoutIfNeeded()
             }
-            self.rideActionView.destination = selectedPlacemark
+            //self.rideActionView.destination = selectedPlacemark
         }
     }
 }
@@ -436,24 +446,29 @@ extension HomeViewController {
         }
     }
     
-    func animateRideActionView(shoudShow: Bool, destination: MKPlacemark? = nil, config: RideActionViewConfiguration? = nil) {
+    func animateRideActionView(shoudShow: Bool, destination: MKPlacemark? = nil, config: RideActionViewConfiguration? = nil, user: User? = nil) {
         
-        let yOrigin = shoudShow ? bottomEdgeOffScreen : bottomEdgeOnScreen
+       // let yOrigin = shoudShow ? bottomEdgeOffScreen : bottomEdgeOnScreen
         
-        UIView.animate(withDuration: 0.3) {
-            self.rideActionViewBottomAnchor?.constant = yOrigin
-            self.rideActionView.layoutIfNeeded()
-        }
+//        UIView.animate(withDuration: 0.3) {
+//            self.rideActionViewBottomAnchor?.constant = yOrigin
+//            self.rideActionView.layoutIfNeeded()
+//        }
         
         if shoudShow {
-//            guard let config = config else { return }
-//            rideActionView.configureUI(withCongig: config)
             
-            guard let destination = destination else { return }
-            rideActionView.destination = destination
+            guard let config = config else { return }
+           
+            if let destination = destination {
+                rideActionView.destination = destination
+            }
+            if let user = user {
+                
+                rideActionView.user = user
+            }
+            
+            rideActionView.configureUI(withConfig: config)
         }
-        
-
     }
     
     
@@ -579,10 +594,17 @@ extension HomeViewController: PickupViewControllerDelegate {
         let mapItem = MKMapItem(placemark: placemark)
         generatePolyLine(toDestination: mapItem)
         mapView.zoomToFit(annotation: mapView.annotations)
-        //self.trip?.state = .accepted
+
         self.dismiss(animated: true) {
-            self.animateRideActionView(shoudShow: false, config: .tripAccepted)
-            self.rideActionView.configureUI(withConfig: .tripAccepted)
+            ServiceManager.shared.fetchUserData(uid: trip.passengerUid) { passenger in
+                self.animateRideActionView(shoudShow: true, config: .tripAccepted, user: passenger)
+                UIView.animate(withDuration: 0.3) {
+                    self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
+                    self.rideActionView.layoutIfNeeded()
+                }
+            }
+          
+           // self.rideActionView.configureUI(withConfig: .tripAccepted)
 //            UIView.animate(withDuration: 0.3) {
 //                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
 //                self.rideActionView.layoutIfNeeded()

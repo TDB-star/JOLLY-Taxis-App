@@ -16,6 +16,7 @@ enum RideActionViewConfiguration {
     case requestRide
     case tripAccepted
     case pickupPassenger
+    case tripInProgress
     case endTrip
     
     init() {
@@ -54,6 +55,7 @@ class RideActionView: UIView {
     weak var delegate: RideActionViewDelegate?
     var config = RideActionViewConfiguration()
     var buttonAction = ButtonAction()
+    var user: User?
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -72,6 +74,12 @@ class RideActionView: UIView {
         label.numberOfLines = 0
         return label
     }()
+    private let infoViewLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .title1)
+        label.textColor = .white
+        return label
+    }()
     
     var destination: MKPlacemark? {
         didSet {
@@ -86,17 +94,12 @@ class RideActionView: UIView {
         let view = UIView()
         view.backgroundColor = .systemPink
         
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 30)
-        label.textColor = .white
-        label.textAlignment = .center
-        label.text = "X"
-        view.addSubview(label)
+        view.addSubview(infoViewLabel)
         translatesAutoresizingMaskIntoConstraints = false
-        label.translatesAutoresizingMaskIntoConstraints = false
+        infoViewLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            infoViewLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoViewLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
         return view
@@ -200,7 +203,19 @@ extension RideActionView {
     }
     
     @objc func actionButtonPressed() {
-        delegate?.uploadTrip(self)
+       
+        switch buttonAction {
+        case .requestRide:
+            delegate?.uploadTrip(self)
+        case .cancel:
+            print("DEBUG: Handle cancel")
+        case .getDirections:
+            print("DEBUG: Handle get diractions")
+        case .pickup:
+            print("DEBUG: Handle pickup")
+        case .dropOff:
+            print("DEBUG: Handle drop off")
+        }
     }
     
     // MARK: - Helper functions
@@ -208,15 +223,46 @@ extension RideActionView {
     func configureUI(withConfig config: RideActionViewConfiguration) {
         switch config {
         case .requestRide:
-            break
-        case .tripAccepted:
-            titleLabel.text = "En Route to Passeger"
-            buttonAction = .getDirections
+            buttonAction = .requestRide
             actionButton.setTitle(buttonAction.description, for: .normal)
+        case .tripAccepted:
+            guard let user = user else { return }
+            
+            if user.accountType == .passenger {
+                titleLabel.text = "En Route to Passeger"
+                buttonAction = .getDirections
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            } else {
+                buttonAction = .cancel
+                actionButton.setTitle(buttonAction.description, for: .normal)
+                titleLabel.text = "Driver En Route"
+            }
+            infoViewLabel.text = String(user.fullname.first ?? "X")
+            jollyTaxiLabel.text = user.fullname
+
         case .pickupPassenger:
-            break
+            titleLabel.text = "Arrived at Passenger Location"
+            buttonAction = .pickup
+            actionButton.setTitle(buttonAction.description, for: .normal)
+        case .tripInProgress:
+            guard let user = user else {return}
+            if user.accountType == .driver {
+                actionButton.setTitle("Trip in progress", for: .normal)
+                actionButton.isEnabled = false
+            } else {
+                buttonAction = .getDirections
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            }
+            titleLabel.text = "En Route to Destination"
         case .endTrip:
-            break
+            guard let user = user else { return }
+            if user.accountType == .driver {
+                actionButton.setTitle("Arrived at Destination", for: .normal)
+                actionButton.isEnabled = false
+            } else {
+                buttonAction = .dropOff
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            }
         }
     }
 }
