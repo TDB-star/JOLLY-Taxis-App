@@ -12,16 +12,54 @@ protocol RideActionViewDelegate: NSObject {
     func uploadTrip(_ view: RideActionView)
 }
 
+enum RideActionViewConfiguration {
+    case requestRide
+    case tripAccepted
+    case pickupPassenger
+    case endTrip
+    
+    init() {
+        self = .requestRide
+    }
+}
+
+enum ButtonAction: CustomStringConvertible {
+    case requestRide
+    case cancel
+    case getDirections
+    case pickup
+    case dropOff
+    
+    var description: String {
+        switch self {
+        case .requestRide:
+            return "Confirm JOLLY Taxi X"
+        case .cancel:
+            return "Cancel ride"
+        case .getDirections:
+            return "Get directions"
+        case .pickup:
+            return "Pickup passanger"
+        case .dropOff:
+            return "Drop off passanger"
+        }
+    }
+    init() {
+        self = .requestRide
+    }
+}
+
 class RideActionView: UIView {
     
     weak var delegate: RideActionViewDelegate?
+    var config = RideActionViewConfiguration()
+    var buttonAction = ButtonAction()
     
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18)
-        label.text = "Test Adress title"
         label.numberOfLines = 0
         return label
     }()
@@ -31,7 +69,6 @@ class RideActionView: UIView {
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
-        label.text = "19 Sovetskaya str"
         label.numberOfLines = 0
         return label
     }()
@@ -164,5 +201,22 @@ extension RideActionView {
     
     @objc func actionButtonPressed() {
         delegate?.uploadTrip(self)
+    }
+    
+    // MARK: - Helper functions
+    
+    func configureUI(withConfig config: RideActionViewConfiguration) {
+        switch config {
+        case .requestRide:
+            break
+        case .tripAccepted:
+            titleLabel.text = "En Route to Passeger"
+            buttonAction = .getDirections
+            actionButton.setTitle(buttonAction.description, for: .normal)
+        case .pickupPassenger:
+            break
+        case .endTrip:
+            break
+        }
     }
 }

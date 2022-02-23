@@ -56,6 +56,7 @@ private enum ActionButtonConfiguration {
                 if user?.accountType == .passenger {
                     fetchDrivers()
                     configureLocationInputActivationView()
+                    observeCurrentTrip()
                 } else {
                     observeTrips()
                 }
@@ -64,12 +65,17 @@ private enum ActionButtonConfiguration {
         
         private var trip: Trip? {
             didSet {
-                guard let trip = trip else { return }
-                let controller = PickupViewController(trip: trip)
-                controller.modalPresentationStyle = .fullScreen
-                self.present(controller, animated: true, completion: nil)
-               
-                print("DEBUG: Show pickup passenger controller ...")
+                guard let user = user else { return }
+                if user.accountType == .driver {
+                    guard let trip = trip else { return }
+                    let controller = PickupViewController(trip: trip)
+                    controller.delegate = self
+                    controller.modalPresentationStyle = .fullScreen
+                    self.present(controller, animated: true, completion: nil)
+                    
+                } else {
+                    print("DEBUG: Show ride action view for accepted trip")
+                }
             }
         }
         
@@ -81,6 +87,13 @@ private enum ActionButtonConfiguration {
             enableLocationServices()
            
            // signOut()
+        }
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            
+            guard let trip = trip else { return }
+            print("DEBUG: Trip state is \(trip.state)")
+
         }
     }
         
@@ -148,6 +161,17 @@ extension HomeViewController {
     func observeTrips() {
         ServiceManager.shared.observeTrips { trip in
             self.trip = trip
+        }
+    }
+    
+    func observeCurrentTrip() {
+        ServiceManager.shared.observeCurrentTrip { trip in
+            self.trip = trip
+            
+            if trip.state == .accepted {
+                print("DEBUG: Trip was accepted")
+                self.shouldPresentLoadingView(false)
+            }
         }
     }
 }
@@ -246,13 +270,7 @@ extension HomeViewController {
         ])
         
         rideActionViewBottomAnchor = view.bottomAnchor.constraint(equalTo: rideActionView.bottomAnchor, constant: bottomEdgeOffScreen)
-        //rideActionViewBottomAnchor = rideActionView.bottomAnchor.constraint(equalTo: view.bottomAnchor , constant: bottomEdgeOffScreen)
         rideActionViewBottomAnchor?.isActive = true
-    
-//        view.bottomAnchor.constraint(equalToSystemSpacingBelow: rideActionView.bottomAnchor, multiplier: 0),
-//        rideActionView.frame = CGRect(x: 0, y: view.frame.height,
-//                                      width: view.frame.width, height: rideActionViewHeight)
-       
     }
     
     func configureTableView() {
@@ -319,6 +337,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+//MARK: - locationInputActivationViewDelegate
 
 extension HomeViewController: locationInputActivationViewDelegate {
     func presentLocationInputView() {
@@ -327,6 +346,8 @@ extension HomeViewController: locationInputActivationViewDelegate {
         configureLocationInputView()
     }
 }
+
+//MARK: - LocationInputViewDelegate
 
 extension HomeViewController: LocationInputViewDelegate {
     func executeSeach(query: String) {
@@ -415,19 +436,24 @@ extension HomeViewController {
         }
     }
     
-    func animateRideActionView(shoudShow: Bool, destination: MKPlacemark? = nil) {
+    func animateRideActionView(shoudShow: Bool, destination: MKPlacemark? = nil, config: RideActionViewConfiguration? = nil) {
         
         let yOrigin = shoudShow ? bottomEdgeOffScreen : bottomEdgeOnScreen
-        
-        if shoudShow {
-            guard let destination = destination else { return }
-            rideActionView.destination = destination
-        }
         
         UIView.animate(withDuration: 0.3) {
             self.rideActionViewBottomAnchor?.constant = yOrigin
             self.rideActionView.layoutIfNeeded()
         }
+        
+        if shoudShow {
+//            guard let config = config else { return }
+//            rideActionView.configureUI(withCongig: config)
+            
+            guard let destination = destination else { return }
+            rideActionView.destination = destination
+        }
+        
+
     }
     
     
@@ -517,21 +543,52 @@ extension HomeViewController {
         }
     }
 
+// MARK: - RideActionViewDelegate
+
 extension HomeViewController: RideActionViewDelegate {
     
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager.location?.coordinate else { return }
         guard let destinationCoordinates = view.destination?.coordinate else { return }
+        
+    shouldPresentLoadingView(true, message: "Finding you a ride...")
+        
         ServiceManager.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { error, ref in
             if let error = error {
                 print("DEBUG: Failed to upload trip with error \(error.localizedDescription)")
                 return
             }
-            print("DEBUG: Did upload trip successfully")
+            UIView.animate(withDuration: 0.3) {
+                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOffScreen
+                self.rideActionView.layoutIfNeeded()
+            }
         }
     }
-
 }
 
+// MARK: - PickupViewControllerDelegate
+
+extension HomeViewController: PickupViewControllerDelegate {
+    func didAcceptTrip(_ trip: Trip) {
+        let anno = MKPointAnnotation()
+        anno.coordinate = trip.pickupCoordinates
+        mapView.addAnnotation(anno)
+        mapView.selectAnnotation(anno, animated: true)
+        
+        let placemark = MKPlacemark(coordinate: trip.pickupCoordinates)
+        let mapItem = MKMapItem(placemark: placemark)
+        generatePolyLine(toDestination: mapItem)
+        mapView.zoomToFit(annotation: mapView.annotations)
+        //self.trip?.state = .accepted
+        self.dismiss(animated: true) {
+            self.animateRideActionView(shoudShow: false, config: .tripAccepted)
+            self.rideActionView.configureUI(withConfig: .tripAccepted)
+//            UIView.animate(withDuration: 0.3) {
+//                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
+//                self.rideActionView.layoutIfNeeded()
+//            }
+        }
+    }
+}
 
 
