@@ -404,6 +404,14 @@ extension HomeViewController {
 // MARK: - MKMapViewDelegate
 
 extension HomeViewController: MKMapViewDelegate {
+    // function updates user location
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        guard let user = self.user else { return }
+        guard user.accountType == .driver else { return }
+        guard let location = userLocation.location else { return }
+        ServiceManager.shared.updateDriverLocation(location: location)
+    }
+   
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? DriverAnnotation {
@@ -438,7 +446,6 @@ extension HomeViewController {
         case .showManue:
             let image = UIImage(systemName: "line.3.horizontal")
             self.actionButton.setImage(image, for: .normal)
-          
             self.actionButtonConfig = .showManue
         case .dismissActionView:
             actionButton.setImage(UIImage(systemName: "arrow.left"), for: .normal)
@@ -548,6 +555,13 @@ extension HomeViewController {
         }
     }
     
+    func centerMapOnUserLocation() {
+        guard let coordinate = locationManager.location?.coordinate else { return }
+        let region = MKCoordinateRegion(center: coordinate,
+                                        latitudinalMeters: 2000,
+                                        longitudinalMeters: 2000)
+        mapView.setRegion(region, animated: true)
+    }
     
     func dismissLocationView(completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: 0.3, animations:  {
@@ -579,6 +593,25 @@ extension HomeViewController: RideActionViewDelegate {
             }
         }
     }
+    func cancelTrip() {
+        ServiceManager.shared.cancelTrip { error, ref in
+            if let error = error {
+                print("DEBUG: Error deliting trip \(error.localizedDescription)")
+                return
+            }
+            self.centerMapOnUserLocation()
+            
+            UIView.animate(withDuration: 0.3) {
+                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOffScreen
+                self.rideActionView.layoutIfNeeded()
+            }
+            self.removeAnnotationsAndOverlays()
+            
+            let image = UIImage(systemName: "line.3.horizontal")
+            self.actionButton.setImage(image, for: .normal)
+            self.actionButtonConfig = .showManue
+        }
+    }
 }
 
 // MARK: - PickupViewControllerDelegate
@@ -594,22 +627,26 @@ extension HomeViewController: PickupViewControllerDelegate {
         let mapItem = MKMapItem(placemark: placemark)
         generatePolyLine(toDestination: mapItem)
         mapView.zoomToFit(annotation: mapView.annotations)
-
-        self.dismiss(animated: true) {
-            ServiceManager.shared.fetchUserData(uid: trip.passengerUid) { passenger in
-                self.animateRideActionView(shoudShow: true, config: .tripAccepted, user: passenger)
-                UIView.animate(withDuration: 0.3) {
-                    self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
-                    self.rideActionView.layoutIfNeeded()
+        
+        ServiceManager.shared.observeTripCancelled(trip: trip) {
+            self.removeAnnotationsAndOverlays()
+            UIView.animate(withDuration: 0.3) {
+                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOffScreen
+                self.rideActionView.layoutIfNeeded()
+            }
+            self.centerMapOnUserLocation()
+            self.presentAlertController(withTitle: "Oops!", message: "The passenger has canceled this trip. Press OK to continue.")
+            
+        }
+            self.dismiss(animated: true) {
+                ServiceManager.shared.fetchUserData(uid: trip.passengerUid) { passenger in
+                    self.animateRideActionView(shoudShow: true, config: .tripAccepted, user: passenger)
+                    UIView.animate(withDuration: 0.3) {
+                        self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
+                        self.rideActionView.layoutIfNeeded()
+                    }
                 }
             }
-          
-           // self.rideActionView.configureUI(withConfig: .tripAccepted)
-//            UIView.animate(withDuration: 0.3) {
-//                self.rideActionViewBottomAnchor?.constant = self.bottomEdgeOnScreen
-//                self.rideActionView.layoutIfNeeded()
-//            }
-        }
     }
 }
 
