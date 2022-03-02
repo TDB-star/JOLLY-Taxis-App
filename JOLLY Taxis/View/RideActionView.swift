@@ -11,11 +11,14 @@ import MapKit
 protocol RideActionViewDelegate: NSObject {
     func uploadTrip(_ view: RideActionView)
     func cancelTrip()
+    func pickupPassenger()
+    func dropOffPassenger()
 }
 
 enum RideActionViewConfiguration {
     case requestRide
     case tripAccepted
+    case driverArrived
     case pickupPassenger
     case tripInProgress
     case endTrip
@@ -54,9 +57,14 @@ enum ButtonAction: CustomStringConvertible {
 class RideActionView: UIView {
     
     weak var delegate: RideActionViewDelegate?
-    var config = RideActionViewConfiguration()
     var buttonAction = ButtonAction()
     var user: User?
+    
+    var config = RideActionViewConfiguration() {
+        didSet {
+            configureUI(withConfig: config)
+        }
+    }
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -212,15 +220,15 @@ extension RideActionView {
         case .getDirections:
             print("DEBUG: Handle get diractions")
         case .pickup:
-            print("DEBUG: Handle pickup")
+            delegate?.pickupPassenger()
         case .dropOff:
-            print("DEBUG: Handle drop off")
+            delegate?.dropOffPassenger()
         }
     }
     
     // MARK: - Helper functions
     
-    func configureUI(withConfig config: RideActionViewConfiguration) {
+   private func configureUI(withConfig config: RideActionViewConfiguration) {
         switch config {
         case .requestRide:
             buttonAction = .requestRide
@@ -239,6 +247,14 @@ extension RideActionView {
             }
             infoViewLabel.text = String(user.fullname.first ?? "X")
             jollyTaxiLabel.text = user.fullname
+            
+        case .driverArrived:
+            guard let user = user else { return }
+            
+            if user.accountType == .driver {
+                titleLabel.text = "Driver Has Arrived"
+                adressLabel.text = "Please meet driver at pickup location"
+            }
 
         case .pickupPassenger:
             titleLabel.text = "Arrived at Passenger Location"
@@ -263,6 +279,7 @@ extension RideActionView {
                 buttonAction = .dropOff
                 actionButton.setTitle(buttonAction.description, for: .normal)
             }
+            titleLabel.text = "Arrived at Destination"
         }
     }
 }

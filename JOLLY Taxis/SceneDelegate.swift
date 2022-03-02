@@ -14,8 +14,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         window?.backgroundColor = .systemBackground
-        window?.rootViewController = HomeViewController()
-        
+        window?.rootViewController = ContainerViewController()
+        //window?.rootViewController = HomeViewController()
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 

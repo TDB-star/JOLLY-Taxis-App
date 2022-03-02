@@ -72,7 +72,7 @@ class PickupViewController: UIViewController {
     }
     
     @objc func handleAcceptTrip() {
-        ServiceManager.shared.acceptTrip(trip: trip) { error, ref in
+        DriverService.shared.acceptTrip(trip: trip) { [unowned self] error, ref in
             self.delegate?.didAcceptTrip(self.trip)
         }
     }
@@ -102,10 +102,7 @@ extension PickupViewController {
         let region = MKCoordinateRegion(center: trip.pickupCoordinates, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapView.setRegion(region, animated: true)
         
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = trip.pickupCoordinates
-        mapView.addAnnotation(annotation)
-        mapView.selectAnnotation(annotation, animated: true)
+        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
     }
     
     func layout() {

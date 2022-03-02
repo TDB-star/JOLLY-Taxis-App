@@ -28,6 +28,6 @@ class LocationHandler: NSObject, CLLocationManagerDelegate {
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("DEBUG: Location is \(String(describing: locationManager.location))")
+        //print("DEBUG: Location is \(String(describing: locationManager.location))")
     }
 }

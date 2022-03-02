@@ -116,7 +116,7 @@ extension LoginViewController {
     }
     
     private func signInUserWith(userName: String, password: String) {
-        Auth.auth().signIn(withEmail: userName, password: password) { result, error in
+        Auth.auth().signIn(withEmail: userName, password: password) { [unowned self] result, error in
             if let error = error {
                 print("DEBUG: Failed to log user in with error: \(error.localizedDescription)")
                 return

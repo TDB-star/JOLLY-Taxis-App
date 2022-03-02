@@ -155,7 +155,7 @@ extension SignUpViewController {
     // MARK: - Helpers
     
     func uploadUserAndShowHomeController(uid: String, values: [String: Any]) {
-        REF_USERS.child(uid).updateChildValues(values) { error, ref in
+        REF_USERS.child(uid).updateChildValues(values) { [unowned self] error, ref in
               guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeViewController else { return }
               controller.configure()
               self.dismiss(animated: true, completion: nil)
