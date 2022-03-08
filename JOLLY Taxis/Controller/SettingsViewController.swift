@@ -9,6 +9,27 @@ import UIKit
 
 
 private let reuseIdentifire = "LocationCell"
+
+enum LocationType: Int, CaseIterable, CustomStringConvertible {
+    case home
+    case work
+    
+    var description: String {
+        switch self {
+            
+        case .home: return "Home"
+        case .work: return "Work"
+        }
+    }
+    
+    var subtitle: String {
+        switch self {
+        case .home: return "Add Home"
+        case .work: return "Add Work"
+        }
+    }
+}
+
 class SettingsViewController: UIViewController {
     
     private let user: User
@@ -96,7 +117,7 @@ extension SettingsViewController {
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return LocationType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -123,9 +144,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifire, for: indexPath) as! LocationTableViewCell
-        cell.titleLabel.text = "Home"
+        guard let type = LocationType(rawValue: indexPath.row) else { return cell }
+        cell.type = type
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let type = LocationType(rawValue: indexPath.row) else { return }
+        print("DEBUG: Type is \(type.description)")
+    }
 }

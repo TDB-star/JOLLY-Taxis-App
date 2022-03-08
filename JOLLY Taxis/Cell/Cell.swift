@@ -17,14 +17,21 @@ class LocationTableViewCell: UITableViewCell {
         }
     }
     
-        let titleLabel: UILabel = {
+    var type: LocationType? {
+        didSet {
+            titleLabel.text = type?.description
+            adressleLabel.text = type?.subtitle
+        }
+    }
+    
+        var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = "12 Tverskaya Street"
         return label
     }()
 
-    private let adressleLabel: UILabel = {
+     var adressleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = "12 Tverskaya Street, Moscow"
