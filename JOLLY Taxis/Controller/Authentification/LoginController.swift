@@ -25,6 +25,9 @@ class LoginViewController: UIViewController {
         style()
         layout()
     }
+    deinit {
+        print("DEINIT:LogInController was depricated")
+    }
 }
 extension LoginViewController {
     
@@ -122,7 +125,7 @@ extension LoginViewController {
                 return
             }
             
-            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeViewController else { return }
+            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? ContainerViewController else { return }
             controller.configure()
             self.dismiss(animated: true, completion: nil)
             print("DEBUG: Siccesfully logged user in")

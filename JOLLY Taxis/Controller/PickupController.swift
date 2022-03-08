@@ -78,7 +78,9 @@ class PickupViewController: UIViewController {
     }
     
     // MARK: - API
-    
+    deinit {
+        print("DEINIT:PickupController was depricated")
+    }
     
 }
 extension PickupViewController {

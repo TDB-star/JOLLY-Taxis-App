@@ -59,7 +59,7 @@ protocol HomeViewControllerDelegate: AnyObject {
         private var rideActionViewBottomAnchor: NSLayoutConstraint?
         private var seachResults = [MKPlacemark]()
         
-        private var user: User? {
+         var user: User? {
             didSet {
                 locationInputView.user = user
                 if user?.accountType == .passenger {
@@ -90,12 +90,11 @@ protocol HomeViewControllerDelegate: AnyObject {
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            locationInputActivationView.translatesAutoresizingMaskIntoConstraints = false
             
-            checkIfUserIsLoggedIn()
+            locationInputActivationView.translatesAutoresizingMaskIntoConstraints = false
             enableLocationServices()
+            configureUI()
            
-           // signOut()
         }
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
@@ -103,6 +102,9 @@ protocol HomeViewControllerDelegate: AnyObject {
             guard let trip = trip else { return }
             print("DEBUG: Trip state is \(trip.state)")
 
+        }
+        deinit {
+            print("DEINIT:HomeController was depricated")
         }
     }
         
@@ -216,42 +218,6 @@ extension HomeViewController {
             presentAlertController(withTitle: "Oops!", message: "The passenger has canceled this trip. Press OK to continue.")
         }
     }
-    
-    // MARK: - Shared API
-    
-    private func checkIfUserIsLoggedIn() {
-        let currentUserId = Auth.auth().currentUser?.uid
-        if currentUserId == nil  {
-            print("DEBUG: User not logged in")
-            DispatchQueue.main.async { [unowned self] in
-                let nav = UINavigationController(rootViewController: LoginViewController())
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true, completion: nil)
-            }
-        } else {
-            configure()
-        }
-    }
-    
-    private func fetchUserData() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        ServiceManager.shared.fetchUserData(uid: currentUid) { [weak self] user in
-            self?.user = user
-        }
-    }
-    
-    private func signOut() {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async { [unowned self] in
-                let nav = UINavigationController(rootViewController: LoginViewController())
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true, completion: nil)
-            }
-        } catch let signOutError as NSError {
-            print("DEBUG: Error signing out: \(signOutError.localizedDescription)")
-        }
-    }
 }
  // MARK: - Cofigure UI
 
@@ -289,7 +255,8 @@ extension HomeViewController {
         NSLayoutConstraint.activate([
             locationInputActivationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             locationInputActivationView.leadingAnchor.constraint(lessThanOrEqualToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: locationInputActivationView.trailingAnchor, multiplier: 2)
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: locationInputActivationView.trailingAnchor, multiplier: 2),
+            locationInputActivationView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
    
@@ -316,7 +283,7 @@ extension HomeViewController {
         ])
         
         locationInputView.alpha = 0
-        UIView.animate(withDuration: 0.5) { [unowned self] in
+        UIView.animate(withDuration: 0.3) { [unowned self] in
             self.locationInputView.alpha = 1
         } completion: { _ in
             UIView.animate(withDuration: 0.3) { [unowned self] in
@@ -528,10 +495,6 @@ extension HomeViewController: MKMapViewDelegate {
 // MARK: - Helpers
 
 extension HomeViewController {
-    func configure() {
-        configureUI()
-        fetchUserData()
-    }
     
     private func configureActionButton(config: ActionButtonConfiguration) {
         switch config {
@@ -771,3 +734,5 @@ extension HomeViewController: PickupViewControllerDelegate {
         }
     }
 }
+
+

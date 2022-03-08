@@ -29,9 +29,6 @@ class LocationInputActivationView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder: has not been implemented)")
     }
-//    override var intrinsicContentSize: CGSize {
-//        return CGSize(width: 200, height: 200)
-//    }
 }
 
 extension LocationInputActivationView {
@@ -49,7 +46,7 @@ extension LocationInputActivationView {
         stackView.spacing = 8
         
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
-        indicatorView.backgroundColor = .darkGray
+        indicatorView.backgroundColor = .systemPink
         
         plachelderLabel.translatesAutoresizingMaskIntoConstraints = false
         plachelderLabel.text = "Where to go?"

@@ -27,6 +27,10 @@ class SignUpViewController: UIViewController {
         let sharedLocationManager = LocationHandler.shared.locationManager
         print("DEBUG: Location is \(String(describing: sharedLocationManager.location))")
     }
+    
+    deinit {
+        print("DEINIT:SigbUpController was depricated")
+    }
 }
 
 extension SignUpViewController {
@@ -156,7 +160,7 @@ extension SignUpViewController {
     
     func uploadUserAndShowHomeController(uid: String, values: [String: Any]) {
         REF_USERS.child(uid).updateChildValues(values) { [unowned self] error, ref in
-              guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeViewController else { return }
+              guard let controller = UIApplication.shared.keyWindow?.rootViewController as? ContainerViewController else { return }
               controller.configure()
               self.dismiss(animated: true, completion: nil)
           }

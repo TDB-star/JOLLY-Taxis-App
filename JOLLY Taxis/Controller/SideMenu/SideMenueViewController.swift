@@ -9,11 +9,31 @@ import UIKit
 
 private let reuseIdentifier = "MenuCell"
 
+ enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
+    case yourTips
+    case settings
+    case logout
+    
+    var description: String {
+        switch self {
+        case .yourTips: return "Your Trips"
+        case .settings: return "Settings"
+        case .logout: return "Log Out"
+        }
+    }
+}
+
+protocol SideMenuViewControllerDelegate: AnyObject {
+    func didSelect(option: MenuOptions)
+}
+
 class SideMenuViewController: UIViewController {
   
-    private lazy var manuHeader: MenuHeader = {
+    weak var delegate: SideMenuViewControllerDelegate?
+    
+    private lazy var menuHeader: MenuHeader = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width - 80, height: 140)
-        let view = MenuHeader(frame: frame)
+        let view = MenuHeader(user: user, frame: frame)
         return view
     }()
     
@@ -26,8 +46,19 @@ class SideMenuViewController: UIViewController {
     return tableView
     }()
     
+    var user: User
 
+
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +66,8 @@ class SideMenuViewController: UIViewController {
         configureTableView()
         configureUI()
     }
+    
+
     
     func configureUI() {
         view.backgroundColor = .red
@@ -47,7 +80,7 @@ class SideMenuViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.rowHeight = 60
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.tableHeaderView = manuHeader
+        tableView.tableHeaderView = menuHeader
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -62,11 +95,18 @@ class SideMenuViewController: UIViewController {
 
 extension SideMenuViewController: UITableViewDataSource, UITableViewDelegate {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+         return MenuOptions.allCases.count
     }
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        cell.textLabel?.text = "Menu Option"
+        
+        guard let option = MenuOptions(rawValue: indexPath.row) else {return UITableViewCell()}
+        cell.textLabel?.text = option.description
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let option = MenuOptions(rawValue: indexPath.row) else { return }
+        delegate?.didSelect(option: option)
     }
 }

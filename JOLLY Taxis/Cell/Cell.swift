@@ -17,7 +17,7 @@ class LocationTableViewCell: UITableViewCell {
         }
     }
     
-    private let titleLabel: UILabel = {
+        let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = "12 Tverskaya Street"

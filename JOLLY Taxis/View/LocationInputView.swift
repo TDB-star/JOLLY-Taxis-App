@@ -17,7 +17,8 @@ class LocationInputView: UIView {
     weak var delegate: LocationInputViewDelegate?
     
     var user: User? {
-        didSet { titleLabel.text = user?.fullname
+        didSet {
+            titleLabel.text = user?.fullname
         }
     }
     

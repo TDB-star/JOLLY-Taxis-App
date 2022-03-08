@@ -24,6 +24,8 @@
 		5DA1BD2E27C51E7D00E275B4 /* PickupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA1BD2D27C51E7D00E275B4 /* PickupController.swift */; };
 		5DA1BD3027C5265B00E275B4 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA1BD2F27C5265B00E275B4 /* Helper.swift */; };
 		5DA7DD7627C0232F003CB912 /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA7DD7527C0232F003CB912 /* RideActionView.swift */; };
+		5DB436B527D76E260055C7FB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB436B427D76E250055C7FB /* SettingsViewController.swift */; };
+		5DB436B727D78E760055C7FB /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB436B627D78E760055C7FB /* UserInfoHeader.swift */; };
 		5DC79AE727BA8780006B3A51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */; };
 		5DC79AE927BAA87D006B3A51 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */; };
 		5DC79AEB27BAA973006B3A51 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC79AEA27BAA973006B3A51 /* Cell.swift */; };
@@ -56,6 +58,8 @@
 		5DA1BD2D27C51E7D00E275B4 /* PickupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupController.swift; sourceTree = "<group>"; };
 		5DA1BD2F27C5265B00E275B4 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		5DA7DD7527C0232F003CB912 /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
+		5DB436B427D76E250055C7FB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		5DB436B627D78E760055C7FB /* UserInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
 		5DC79AE627BA8780006B3A51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5DC79AEA27BAA973006B3A51 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				5D2F5F2E27B980D800209DC9 /* LoginView.swift */,
+				5DB436B627D78E760055C7FB /* UserInfoHeader.swift */,
 				5D2F5F3427B98F9D00209DC9 /* SignUpView.swift */,
 				5DC79AED27BAAA20006B3A51 /* LocationInputActivationView.swift */,
 				5DC79AEF27BAAA5D006B3A51 /* LocationInputView.swift */,
@@ -167,6 +172,7 @@
 				5D517A4C27CE5C7600E6B914 /* Authentification */,
 				5DC79AE827BAA87D006B3A51 /* HomeViewController.swift */,
 				5DA1BD2D27C51E7D00E275B4 /* PickupController.swift */,
+				5DB436B427D76E250055C7FB /* SettingsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -346,9 +352,11 @@
 				5DC79AEB27BAA973006B3A51 /* Cell.swift in Sources */,
 				5D2F5F2F27B980D800209DC9 /* LoginView.swift in Sources */,
 				5DDD619927BBDC7B0015D256 /* LocationHandler.swift in Sources */,
+				5DB436B527D76E260055C7FB /* SettingsViewController.swift in Sources */,
 				5DA7DD7627C0232F003CB912 /* RideActionView.swift in Sources */,
 				5D2F5F1627B979FF00209DC9 /* SceneDelegate.swift in Sources */,
 				5D517A4927CE287400E6B914 /* ContainerViewController.swift in Sources */,
+				5DB436B727D78E760055C7FB /* UserInfoHeader.swift in Sources */,
 				5D2F5F3327B98F5100209DC9 /* SignUpController.swift in Sources */,
 				5DA1BD2C27C3E97C00E275B4 /* Trip.swift in Sources */,
 				5DC79AF027BAAA5D006B3A51 /* LocationInputView.swift in Sources */,
