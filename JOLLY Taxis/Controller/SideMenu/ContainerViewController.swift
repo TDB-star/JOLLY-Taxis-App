@@ -170,6 +170,14 @@ extension ContainerViewController: HomeViewControllerDelegate {
     }
 }
 
+// MARK: - SettingsViewControllerDelegate
+
+extension ContainerViewController: SettingsViewControllerDelegate {
+    func updateUser(_ controller: SettingsViewController) {
+        user = controller.user
+    }
+}
+
 extension ContainerViewController: SideMenuViewControllerDelegate {
     func didSelect(option: MenuOptions) {
         isExpanded.toggle()
@@ -182,6 +190,7 @@ extension ContainerViewController: SideMenuViewControllerDelegate {
                 let controller = SettingsViewController(user: user)
                 let nav = UINavigationController(rootViewController: controller)
                 nav.modalPresentationStyle = .fullScreen
+                controller.delegate = self
                 self.present(nav, animated: true, completion: nil)
                 
                 
