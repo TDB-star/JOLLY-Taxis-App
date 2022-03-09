@@ -10,13 +10,23 @@ import MapKit
 
 private let reuseIdentifier = "Cell"
 
+protocol AddLocationViewControllerDelegate: AnyObject {
+    func updateLocation(locationString: String, type: LocationType)
+}
+
 class AddLocationViewController: UIViewController {
     
     private let tableView = UITableView()
     private let searchBar = UISearchBar()
     
+    weak var delegate: AddLocationViewControllerDelegate?
+    
     private let searchCompleter = MKLocalSearchCompleter()
-    private let searchResults = [MKLocalSearchCompletion]()
+    private var searchResults = [MKLocalSearchCompletion]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     private let type: LocationType
     private let location: CLLocation
     
@@ -87,6 +97,8 @@ class AddLocationViewController: UIViewController {
     
 }
 
+// MARK: - UITableViewDataSource/UITableViewDelegate
+
 extension AddLocationViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
@@ -95,16 +107,34 @@ extension AddLocationViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
+        let result = searchResults[indexPath.row]
+        cell.textLabel?.text = result.title
+        cell.detailTextLabel?.text = result.subtitle
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let result = searchResults[indexPath.row]
+        let title = result.title
+        let subtitle = result.subtitle
+        let locationString = title + "" + subtitle
+        delegate?.updateLocation(locationString: locationString, type: type)
+    }
+    
 }
+// MARK: - UISearchBarDelegate
 
 extension AddLocationViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchCompleter.queryFragment = searchText
+    }
     
 }
+// MARK: - MKLocalSearchCompleterDelegate
 
 extension AddLocationViewController: MKLocalSearchCompleterDelegate {
-    
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        searchResults = completer.results
+
+    }
 }

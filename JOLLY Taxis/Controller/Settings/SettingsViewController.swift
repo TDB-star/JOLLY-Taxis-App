@@ -32,7 +32,7 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
 
 class SettingsViewController: UIViewController {
     
-    private let user: User
+    private var user: User
     
     
     private let tableView = UITableView()
@@ -111,7 +111,15 @@ extension SettingsViewController {
     @objc func handleDismissal() {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    func locationText(forType type: LocationType) -> String {
+        switch type {
+        case .home: return user.homeLocation ?? type.subtitle
+        case .work: return user.workLocation ?? type.subtitle
+        }
+    }
 }
+
 
 // MARK: - UITableViewDataSource/Delegate
 
@@ -146,7 +154,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifire, for: indexPath) as! LocationTableViewCell
         guard let type = LocationType(rawValue: indexPath.row) else { return cell }
-        cell.type = type
+        cell.titleLabel.text = type.description
+        cell.adressleLabel.text = locationText(forType: type)
         return cell
     }
     
@@ -154,7 +163,24 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         guard let type = LocationType(rawValue: indexPath.row) else { return }
         guard let location = locationManager.location else { return }
         let controller = AddLocationViewController(type: type, location: location)
+        controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true, completion: nil)
+    }
+}
+
+// MARK: - AddLocationViewControllerDelegate
+
+extension SettingsViewController: AddLocationViewControllerDelegate {
+    func updateLocation(locationString: String, type: LocationType) {
+        PassengerService.shared.seveLocation(locationString: locationString, type: type) { [unowned self] error, ref in
+            self.dismiss(animated: true, completion: nil)
+            
+            switch type {
+            case .home: user.homeLocation = locationString
+            case .work: user.workLocation = locationString
+            }
+            tableView.reloadData()
+        }
     }
 }

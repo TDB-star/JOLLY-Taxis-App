@@ -18,14 +18,7 @@ class LocationTableViewCell: UITableViewCell {
             adressleLabel.text = placemark?.adress
         }
     }
-    
-    var type: LocationType? {
-        didSet {
-            titleLabel.text = type?.description
-            adressleLabel.text = type?.subtitle
-        }
-    }
-    
+
         var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
