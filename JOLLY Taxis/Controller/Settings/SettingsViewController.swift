@@ -35,7 +35,8 @@ class SettingsViewController: UIViewController {
     private let user: User
     
     
-    var tableView = UITableView()
+    private let tableView = UITableView()
+    private let locationManager = LocationHandler.shared.locationManager
  
     private lazy var infoHeader: UserInfoHeader = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
@@ -151,6 +152,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let type = LocationType(rawValue: indexPath.row) else { return }
-        print("DEBUG: Type is \(type.description)")
+        guard let location = locationManager.location else { return }
+        let controller = AddLocationViewController(type: type, location: location)
+        let nav = UINavigationController(rootViewController: controller)
+        present(nav, animated: true, completion: nil)
     }
 }

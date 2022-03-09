@@ -10,6 +10,8 @@ import MapKit
 
 class LocationTableViewCell: UITableViewCell {
     
+    let reuseIdetifire = "LocationCell"
+    
     var placemark: MKPlacemark? {
         didSet {
             titleLabel.text = placemark?.name
