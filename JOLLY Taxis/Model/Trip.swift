@@ -11,6 +11,7 @@ import CoreText
 
 enum TripState: Int {
     case requested = 0
+    case denied
     case accepted
     case driverArrived
     case inProgress

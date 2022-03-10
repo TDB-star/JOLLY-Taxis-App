@@ -58,7 +58,10 @@ extension UIColor {
     static func rgbColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: 1.0)
     }
-    static let appColor = UIColor.rgbColor(red: 17, green: 154, blue: 237)
+    static let mainBlueTint = UIColor.rgbColor(red: 17, green: 154, blue: 237)
+    static let outlineStrokeColor = UIColor.rgbColor(red: 234, green: 46, blue: 111)
+    static let trackStrokeColor = UIColor.rgbColor(red: 56, green: 25, blue: 49)
+    static let pulsatingFillColor = UIColor.rgbColor(red: 86, green: 30, blue: 63)
 }
 
 extension MKPlacemark {

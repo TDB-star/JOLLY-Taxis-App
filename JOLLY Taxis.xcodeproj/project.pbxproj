@@ -21,6 +21,7 @@
 		5D517A4927CE287400E6B914 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D517A4827CE287400E6B914 /* ContainerViewController.swift */; };
 		5D517A4B27CE356500E6B914 /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D517A4A27CE356500E6B914 /* MenuHeader.swift */; };
 		5D9B705727D898A200C184EF /* AddLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9B705627D898A200C184EF /* AddLocationController.swift */; };
+		5D9B705927D8E31B00C184EF /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9B705827D8E31B00C184EF /* CircularProgressView.swift */; };
 		5DA1BD2C27C3E97C00E275B4 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA1BD2B27C3E97C00E275B4 /* Trip.swift */; };
 		5DA1BD2E27C51E7D00E275B4 /* PickupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA1BD2D27C51E7D00E275B4 /* PickupController.swift */; };
 		5DA1BD3027C5265B00E275B4 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA1BD2F27C5265B00E275B4 /* Helper.swift */; };
@@ -56,6 +57,7 @@
 		5D517A4827CE287400E6B914 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		5D517A4A27CE356500E6B914 /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
 		5D9B705627D898A200C184EF /* AddLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationController.swift; sourceTree = "<group>"; };
+		5D9B705827D8E31B00C184EF /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		5DA1BD2B27C3E97C00E275B4 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		5DA1BD2D27C51E7D00E275B4 /* PickupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupController.swift; sourceTree = "<group>"; };
 		5DA1BD2F27C5265B00E275B4 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				5DC79AEF27BAAA5D006B3A51 /* LocationInputView.swift */,
 				5DA7DD7527C0232F003CB912 /* RideActionView.swift */,
 				5D517A4A27CE356500E6B914 /* MenuHeader.swift */,
+				5D9B705827D8E31B00C184EF /* CircularProgressView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				5DA1BD2C27C3E97C00E275B4 /* Trip.swift in Sources */,
 				5DC79AF027BAAA5D006B3A51 /* LocationInputView.swift in Sources */,
 				5DA1BD2E27C51E7D00E275B4 /* PickupController.swift in Sources */,
+				5D9B705927D8E31B00C184EF /* CircularProgressView.swift in Sources */,
 				5D9B705727D898A200C184EF /* AddLocationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

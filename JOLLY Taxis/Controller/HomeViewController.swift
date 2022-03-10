@@ -40,6 +40,9 @@ protocol HomeViewControllerDelegate: AnyObject {
         private var actionButtonConfig = ActionButtonConfiguration()
         private var route: MKRoute?
         weak var delegate: HomeViewControllerDelegate?
+        private var rideActionViewBottomAnchor: NSLayoutConstraint?
+        private var seachResults = [MKPlacemark]()
+        private var savedLocationts = [MKPlacemark]()
         
         let actionButton: UIButton = {
             let button = UIButton(type: .system)
@@ -56,8 +59,7 @@ protocol HomeViewControllerDelegate: AnyObject {
         private var bottomEdgeOffScreen: CGFloat = -300
         private var bottomEdgeOnScreen: CGFloat = 0
         
-        private var rideActionViewBottomAnchor: NSLayoutConstraint?
-        private var seachResults = [MKPlacemark]()
+
         
          var user: User? {
             didSet {
@@ -66,6 +68,7 @@ protocol HomeViewControllerDelegate: AnyObject {
                     fetchDrivers()
                     configureLocationInputActivationView()
                     observeCurrentTrip()
+                    configureSavedUserLocations()
                 } else {
                     observeTrips()
                 }
@@ -166,6 +169,15 @@ extension HomeViewController {
             switch state {
             case .requested:
                 break
+            case .denied:
+                shouldPresentLoadingView(false)
+                presentAlertController(withTitle: "Oops", message: "It looks like we couldnt finde you a driver. Please try again...")
+                PassengerService.shared.deleteTrip { [unowned self] error , ref in
+                    self.centerMapOnUserLocation()
+                    self.configureActionButton(config: .showManue)
+                    self.locationInputActivationView.alpha = 1
+                    self.removeAnnotationsAndOverlays()
+                }
             case .accepted:
                 shouldPresentLoadingView(false)
                 removeAnnotationsAndOverlays()
@@ -322,7 +334,6 @@ extension HomeViewController {
         
         tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: reuseCellIdentifire)
         tableView.rowHeight = 60
-        tableView.tableFooterView = UIView()
         
         let height = view.frame.height - locationInputViewHeight
         tableView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: height)
@@ -335,7 +346,7 @@ extension HomeViewController {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        "test"
+        section == 0 ? "Saved Locations" : "Search Results"
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -343,11 +354,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? 2 : seachResults.count
+        section == 0 ? savedLocationts.count : seachResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseCellIdentifire, for: indexPath) as! LocationTableViewCell
+        
+        if indexPath.section == 0 {
+            cell.placemark = savedLocationts[indexPath.row]
+        }
         
         if indexPath.section == 1 {
             cell.placemark = seachResults[indexPath.row]
@@ -356,9 +371,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPlacemark = seachResults[indexPath.row]
+        let selectedPlacemark = indexPath.section == 0 ? savedLocationts[indexPath.row] : seachResults[indexPath.row]
        
-        
         configureActionButton(config: .dismissActionView)
         
         let destination = MKMapItem(placemark: selectedPlacemark)
@@ -511,9 +525,9 @@ extension HomeViewController {
     func animateRideActionView(shoudShow: Bool, destination: MKPlacemark? = nil, config: RideActionViewConfiguration? = nil, user: User? = nil) {
         
         if shoudShow {
-            
             guard let config = config else { return }
-           
+            savedLocationts.removeAll()
+            
             if let destination = destination {
                 rideActionView.destination = destination
             }
@@ -528,6 +542,27 @@ extension HomeViewController {
     private func setCustomRegion(withType type: AnnotationType, coordinates: CLLocationCoordinate2D) {
         let region = CLCircularRegion(center: coordinates, radius: 25, identifier: type.rawValue)
         locationManager.startMonitoring(for: region)
+    }
+    
+    private func configureSavedUserLocations() {
+        guard let user = user else { return }
+        if let homeLocation = user.homeLocation {
+            geocodeAddressString(address: homeLocation)
+        }
+        if let workLocation = user.workLocation {
+            geocodeAddressString(address: workLocation)
+        }
+    }
+    
+    private func geocodeAddressString(address: String) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(address) { [unowned self] placemarks, error in
+            guard let clPlacemark = placemarks?.first else { return }
+            let placemark = MKPlacemark(placemark: clPlacemark)
+            self.savedLocationts.append(placemark)
+            self.tableView.reloadData()
+        }
+        
     }
     
     
